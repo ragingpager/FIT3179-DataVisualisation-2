@@ -1,0 +1,145 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "VIC rainfall stations with state boundary",
+  "autosize": {"type": "fit", "contains": "padding"},
+  
+  "width": "container",
+  "height": 430,
+  "params": [
+    {
+      "name": "pYear",
+      "value": 2025,
+      "bind": {"input": "range", "min": 2010, "max": 2025, "step": 1, "name": "Year: "}
+    },
+    {
+      "name": "pMonth",
+      "value": 10,
+      "bind": {"input": "range", "min": 1, "max": 12, "step": 1, "name": "Month: "}
+    }
+  ],
+  "projection": {
+    "type": "mercator",
+    "center": [145, -36.75],
+    "scale": 3500
+  },
+  "layer": [
+    {
+      "data": {"graticule": {"step": [2, 2]}},
+      "mark": {"type": "geoshape", "fill": null, "stroke": "#cfd8dc", "strokeWidth": 1, "opacity": 0.6}
+    },
+    {
+      "data": {
+        "url": "geo_data/victoria_state.json",
+        "format": {"type": "json", "property": "features"}
+      },
+      "mark": {"type": "geoshape", "fill": "#fafafa", "stroke": "#1565c0", "strokeWidth": 3}
+    },
+    {
+      "data": {"url": "data/VIC_Monthly_Rainfall_2010_2025.csv"},
+      "params": [
+        {"name": "pt", "select": {"type": "point", "fields": ["Station Name"], "on": "pointermove", "clear": "pointerleave", "nearest": true}}
+      ],
+      "transform": [
+        {"filter": "datum.Year == pYear && datum.Month == pMonth"}
+      ],
+      "mark": {"type": "circle"},
+      "encoding": {
+        "longitude": {"field": "Longitude", "type": "quantitative"},
+        "latitude": {"field": "Latitude", "type": "quantitative"},
+        "size": {
+          "condition": {"param": "pt", "empty": false, "value": 1400},
+          "value": 220,
+          "legend": null
+        },
+        "strokeWidth": {"condition": {"param": "pt", "empty": false, "value": 2.5}, "value": 1.25},
+        "opacity": {"condition": {"param": "pt", "empty": false, "value": 1}, "value": 0.85},
+        "color": {
+          "field": "Rainfall (mm)",
+          "type": "quantitative",
+          "title": "Rain (mm)",
+          "scale": {"scheme": "blues"},
+          "legend": {"orient": "right", "direction": "vertical"}
+        },
+        "stroke": {"value": "#000000"},
+        "tooltip": [
+          {"field": "Station Name", "title": "Station"},
+          {"field": "Year", "title": "Year"},
+          {"field": "Month", "title": "Month"},
+          {"field": "Rainfall (mm)", "title": "Rainfall (mm)", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "data": {"values": [{"lon": 143.5, "lat": -38.5, "label": "OTWAY RANGES", "sublabel": "High rainfall coastal zone", "type": "region"}]},
+      "mark": {"type": "text", "fontSize": 11, "fontWeight": "bold", "color": "#000000", "dy": -8},
+      "encoding": {
+        "longitude": {"field": "lon", "type": "quantitative"},
+        "latitude": {"field": "lat", "type": "quantitative"},
+        "text": {"field": "label"}
+      }
+    },
+    {
+      "data": {"values": [{"lon": 142.5, "lat": -35.2, "label": "MALLEE REGION"}]},
+      "mark": {"type": "text", "fontSize": 11, "fontWeight": "bold", "color": "#000000", "dy": -8},
+      "encoding": {
+        "longitude": {"field": "lon", "type": "quantitative"},
+        "latitude": {"field": "lat", "type": "quantitative"},
+        "text": {"field": "label"}
+      }
+    },
+    {
+      "data": {"values": [{"lon": 145, "lat": -37.8, "label": "MELBOURNE"}]},
+      "mark": {"type": "text", "fontSize": 10, "fontWeight": "600", "color": "#000000"},
+      "encoding": {
+        "longitude": {"field": "lon", "type": "quantitative"},
+        "latitude": {"field": "lat", "type": "quantitative"},
+        "text": {"field": "label"}
+      }
+    },
+    {
+      "data": {"values": [{"lon": 147, "lat": -37.8, "label": "GIPPSLAND"}]},
+      "mark": {"type": "text", "fontSize": 10, "fontWeight": "600", "color": "#000000"},
+      "encoding": {
+        "longitude": {"field": "lon", "type": "quantitative"},
+        "latitude": {"field": "lat", "type": "quantitative"},
+        "text": {"field": "label"}
+      }
+    },
+    {
+      "data": {"url": "data/VIC_Monthly_Rainfall_2010_2025.csv"},
+      "transform": [
+        {"filter": "datum.Year == pYear && datum.Month == pMonth && datum['Rainfall (mm)'] != 'MISSING'"},
+        {"calculate": "toNumber(datum['Rainfall (mm)'])", "as": "Rain_mm"},
+        {"filter": "datum.Longitude >= 143 && datum.Longitude <= 144 && datum.Latitude >= -39 && datum.Latitude <= -38"},
+        {"aggregate": [{"op": "mean", "field": "Rain_mm", "as": "AvgRain_mm"}]},
+        {"calculate": "'Otways: ' + format(datum.AvgRain_mm, '.1f') + ' mm'", "as": "Label"}
+      ],
+      "mark": {"type": "text", "fontSize": 10, "fontStyle": "italic", "color": "#000000", "dy": 4},
+      "encoding": {
+        "longitude": {"datum": 143.5},
+        "latitude": {"datum": -38.5},
+        "text": {"field": "Label"}
+      }
+    },
+    {
+      "data": {"url": "data/VIC_Monthly_Rainfall_2010_2025.csv"},
+      "transform": [
+        {"filter": "datum.Year == pYear && datum.Month == pMonth && datum['Rainfall (mm)'] != 'MISSING'"},
+        {"calculate": "toNumber(datum['Rainfall (mm)'])", "as": "Rain_mm"},
+        {"filter": "datum.Longitude >= 141.5 && datum.Longitude <= 144 && datum.Latitude >= -35.8 && datum.Latitude <= -34.5"},
+        {"aggregate": [{"op": "mean", "field": "Rain_mm", "as": "AvgRain_mm"}]},
+        {"calculate": "'Mallee: ' + format(datum.AvgRain_mm, '.1f') + ' mm'", "as": "Label"}
+      ],
+      "mark": {"type": "text", "fontSize": 10, "fontStyle": "italic", "color": "#000000", "dy": 4},
+      "encoding": {
+        "longitude": {"datum": 142.5},
+        "latitude": {"datum": -35.2},
+        "text": {"field": "Label"}
+      }
+    }
+  ],
+  "config": {
+    "view": {"stroke": null},
+    "background": "#ffffff"
+  }
+}

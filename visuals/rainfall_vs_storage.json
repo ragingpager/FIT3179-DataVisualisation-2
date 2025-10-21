@@ -1,0 +1,55 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Rainfall vs Statewide Storage",
+  "autosize": {"type": "fit", "contains": "padding"},
+  "params": [
+    {"name": "pYearMin", "value": 2010, "bind": {"input": "range", "min": 2010, "max": 2025, "step": 1, "name": "Start Year: "}},
+    {"name": "pYearMax", "value": 2025, "bind": {"input": "range", "min": 2010, "max": 2025, "step": 1, "name": "End Year: "}},
+    {"name": "showRainfall", "value": true, "bind": {"input": "checkbox", "name": "Show - Rainfall"}},
+    {"name": "showStorage", "value": true, "bind": {"input": "checkbox", "name": "Storage"}}
+  ],
+  "width": "container",
+  "height": 350,
+  "layer": [
+    {
+      "data": {"url": "data/VIC_Monthly_Rainfall_2010_2025.csv"},
+      "transform": [
+        {"filter": "datum['Rainfall (mm)'] != 'MISSING'"},
+        {"calculate": "toNumber(datum['Rainfall (mm)'])", "as": "Rainfall_num"},
+        {"aggregate": [{"op": "mean", "field": "Rainfall_num", "as": "AvgRain_mm"}], "groupby": ["Year","Month"]},
+        {"calculate": "toDate(datum.Year + '-' + datum.Month + '-01')", "as": "Date"},
+        {"filter": "year(datum.Date) >= pYearMin && year(datum.Date) <= pYearMax"},
+        {"filter": "showRainfall"}
+      ],
+      "mark": {"type": "line", "strokeWidth": 3, "interpolate": "monotone", "point": {"filled": true, "size": 40}},
+      "encoding": {
+        "x": {"field": "Date", "type": "temporal", "axis": {"title": null, "grid": false, "format": "%Y"}},
+        "y": {"field": "AvgRain_mm", "type": "quantitative", "axis": {"title": "Rainfall (mm)", "titleColor": "#1565c0", "titleFontWeight": "bold", "labels": true, "format": ".0f", "grid": false}},
+        "color": {"value": "#1565c0"},
+        "tooltip": [
+          {"field": "Date", "type": "temporal", "title": "Month", "format": "%b %Y"},
+          {"field": "AvgRain_mm", "title": "Rainfall (mm)", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "data": {"url": "data/VIC_Statewide_Storage_Percent_2010_2025.csv"},
+      "transform": [
+        {"calculate": "toDate(datum.Year + '-' + datum.Month + '-01')", "as": "Date"},
+        {"filter": "year(datum.Date) >= pYearMin && year(datum.Date) <= pYearMax"},
+        {"filter": "showStorage"}
+      ],
+      "mark": {"type": "line", "strokeWidth": 3, "interpolate": "monotone", "point": {"filled": true, "size": 40}},
+      "encoding": {
+        "x": {"field": "Date", "type": "temporal", "axis": {"title": null}},
+        "y": {"field": "Statewide_Percent_Full", "type": "quantitative", "axis": {"title": "Storage (%)", "titleColor": "#2e7d32", "titleFontWeight": "bold", "orient": "right", "labels": true, "format": ".0f", "grid": false}},
+        "color": {"value": "#2e7d32"},
+        "tooltip": [
+          {"field": "Date", "type": "temporal", "title": "Month", "format": "%b %Y"},
+          {"field": "Statewide_Percent_Full", "title": "Storage (%)", "format": ".1f"}
+        ]
+      }
+    }
+  ],
+  "resolve": {"scale": {"y": "independent"}}
+}

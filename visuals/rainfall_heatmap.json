@@ -1,0 +1,167 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Rainfall heatmap by Year × Month",
+
+  "data": {"url": "data/VIC_Monthly_Rainfall_2010_2025.csv"},
+  "transform": [
+    {"filter": "datum['Rainfall (mm)'] != 'MISSING'"},
+    {"calculate": "toNumber(datum['Rainfall (mm)'])", "as": "Rainfall_num"},
+    {"calculate": "toNumber(datum.Year)", "as": "Year_num"},
+    {"calculate": "toNumber(datum.Month)", "as": "Month_num"},
+    {"aggregate": [{"op": "mean", "field": "Rainfall_num", "as": "AvgRain_mm"}],
+     "groupby": ["Year_num","Month_num"]}
+  ],
+  "layer": [
+    {
+      "mark": {"type": "rect", "stroke": "white", "strokeWidth": 1},
+      "encoding": {
+        "y": {"field": "Year_num", "type": "ordinal", "title": "Year", "sort": "ascending"},
+        "x": {
+          "field": "Month_num",
+          "type": "ordinal",
+          "title": "Month",
+          "axis": {"labelExpr": "['', 'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][datum.value]"}
+        },
+        "color": {"field": "AvgRain_mm", "type": "quantitative", "title": "Rain (mm)", "scale": {"scheme": "blues"}, "legend": {"orient": "bottom"}},
+        "tooltip": [
+          {"field": "Year_num", "title": "Year", "format": "d"},
+          {"field": "Month_num", "title": "Month"},
+          {"field": "AvgRain_mm", "title": "Rain (mm)", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "transform": [
+        {"calculate": "['', 'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][datum.Month_num]", "as": "MonthLabel"},
+        {"window": [{"op": "rank", "as": "r"}], "sort": [{"field": "AvgRain_mm", "order": "ascending"}]},
+        {"filter": "datum.r == 1"}
+      ],
+      "mark": {"type": "text", "align": "center", "baseline": "middle", "dx": 0, "dy": 0, "fontWeight": "normal", "fontSize": 10, "color": "#000000", "zindex": 10},
+      "encoding": {
+        "x": {"field": "Month_num", "type": "ordinal"},
+        "y": {"field": "Year_num", "type": "ordinal"},
+        "text": {"value": "Driest month"},
+        "tooltip": [
+          {"field": "Year_num", "title": "Year"},
+          {"field": "MonthLabel", "title": "Month"},
+          {"field": "AvgRain_mm", "title": "Rain (mm)", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "transform": [
+        {"calculate": "['', 'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][datum.Month_num]", "as": "MonthLabel"},
+        {"window": [{"op": "rank", "as": "r"}], "sort": [{"field": "AvgRain_mm", "order": "ascending"}]},
+        {"filter": "datum.r == 1"}
+      ],
+      "mark": {"type": "rect", "fill": "#ffffff", "fillOpacity": 0.001, "stroke": "#d32f2f", "strokeWidth": 2, "zindex": 9},
+      "encoding": {
+        "x": {"field": "Month_num", "type": "ordinal"},
+        "y": {"field": "Year_num", "type": "ordinal"},
+        "tooltip": [
+          {"field": "Year_num", "title": "Year"},
+          {"field": "MonthLabel", "title": "Month"},
+          {"field": "AvgRain_mm", "title": "Rain (mm)", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "transform": [
+        {"calculate": "['', 'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][datum.Month_num]", "as": "MonthLabel"},
+        {"window": [{"op": "rank", "as": "r"}], "sort": [{"field": "AvgRain_mm", "order": "descending"}]},
+        {"filter": "datum.r == 1"}
+      ],
+      "mark": {"type": "text", "align": "center", "baseline": "middle", "dx": 0, "dy": 0, "fontWeight": "normal", "fontSize": 10, "color": "#ffffff", "zindex": 10},
+      "encoding": {
+        "x": {"field": "Month_num", "type": "ordinal"},
+        "y": {"field": "Year_num", "type": "ordinal"},
+        "text": {"value": "Wettest month"},
+        "tooltip": [
+          {"field": "Year_num", "title": "Year"},
+          {"field": "MonthLabel", "title": "Month"},
+          {"field": "AvgRain_mm", "title": "Rain (mm)", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "transform": [
+        {"calculate": "['', 'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][datum.Month_num]", "as": "MonthLabel"},
+        {"window": [{"op": "rank", "as": "r"}], "sort": [{"field": "AvgRain_mm", "order": "descending"}]},
+        {"filter": "datum.r == 1"}
+      ],
+      "mark": {"type": "rect", "fill": "#ffffff", "fillOpacity": 0.001, "stroke": "#2e7d32", "strokeWidth": 2, "zindex": 9},
+      "encoding": {
+        "x": {"field": "Month_num", "type": "ordinal"},
+        "y": {"field": "Year_num", "type": "ordinal"},
+        "tooltip": [
+          {"field": "Year_num", "title": "Year"},
+          {"field": "MonthLabel", "title": "Month"},
+          {"field": "AvgRain_mm", "title": "Rain (mm)", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "data": {"values": [{"x": 10, "y": 2016, "label": "SPRING VOLATILITY"}]},
+      "mark": {"type": "text", "fontSize": 10, "fontWeight": "600", "color": "#000000", "angle": 270, "dx": 15},
+      "encoding": {
+        "x": {"field": "x", "type": "ordinal"},
+        "y": {"field": "y", "type": "ordinal"},
+        "text": {"field": "label"}
+      }
+    },
+    {
+      "data": {"values": [{"x": 10, "y": 2015}]},
+      "mark": {"type": "rect", "fill": "#ffffff", "fillOpacity": 0.001, "stroke": "#ffa726", "strokeWidth": 2.5, "strokeDash": [4, 3]},
+      "encoding": {
+        "x": {"field": "x", "type": "ordinal"},
+        "y": {"field": "y", "type": "ordinal"}
+      }
+    },
+    {
+      "data": {"values": [{"x": 10, "y": 2016}]},
+      "mark": {"type": "rect", "fill": "#ffffff", "fillOpacity": 0.001, "stroke": "#ffa726", "strokeWidth": 2.5, "strokeDash": [4, 3]},
+      "encoding": {
+        "x": {"field": "x", "type": "ordinal"},
+        "y": {"field": "y", "type": "ordinal"}
+      }
+    },
+    {
+      "data": {"values": [{"x": 7, "y": 2010, "label": "WINTER RELIABILITY"}]},
+      "mark": {"type": "text", "fontSize": 9, "fontWeight": "600", "color": "#000000", "dy": -25},
+      "encoding": {
+        "x": {"field": "x", "type": "ordinal"},
+        "y": {"field": "y", "type": "ordinal"},
+        "text": {"field": "label"}
+      }
+    },
+    {
+      "data": {"values": [{"x": 7, "y": 2010}]},
+      "mark": {"type": "text", "fontSize": 9, "fontStyle": "italic", "color": "#000000", "dy": -14},
+      "encoding": {
+        "x": {"field": "x", "type": "ordinal"},
+        "y": {"field": "y", "type": "ordinal"},
+        "text": {"value": "Jun-Aug: ~49mm avg"}
+      }
+    },
+    {
+      "data": {"values": [{"x": 2, "y": 2019, "label": "DRIEST PERIOD"}]},
+      "mark": {"type": "text", "fontSize": 9, "fontWeight": "600", "color": "#000000", "dx": 40},
+      "encoding": {
+        "x": {"field": "x", "type": "ordinal"},
+        "y": {"field": "y", "type": "ordinal"},
+        "text": {"field": "label"}
+      }
+    },
+    {
+      "data": {"values": [{"x": 2, "y": 2019}]},
+      "mark": {"type": "text", "fontSize": 9, "fontStyle": "italic", "color": "#000000", "dx": 40, "dy": 11},
+      "encoding": {
+        "x": {"field": "x", "type": "ordinal"},
+        "y": {"field": "y", "type": "ordinal"},
+        "text": {"value": "Jun 2024-May 2025: 23.8mm avg"}
+      }
+    }
+  ],
+  "width": "container", "height": 500,
+  "config": { "view": {"stroke": null}, "style": {"cell": {"strokeWidth": 0.5}} }
+}

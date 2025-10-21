@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="Interactive visualisation exploring Victoria's rainfall patterns and reservoir storage trends from 2010 to 2025" />
+<meta name="author" content="Rahul Pejathaya (32993226)" />
+<title>Victoria's Water Story: Rainfall & Reservoir Storage (2010-2025)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="style.css" />
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+</head>
+<body>
+<header>
+  <h1>Victoria's Water Story: Rainfall & Reservoir Storage</h1>
+  <p class="subtitle">Understanding the relationship between rainfall and water storage across Victoria (2010-2025)</p>
+  <p class="author">By Rahul Pejathaya (32993226) | FIT3179 Data Visualisation 2 | October 2025</p>
+</header>
+
+<main>
+    <section class="intro">
+      <h2>Victoria's Water Crisis and Recovery: A 15-Year Story</h2>
+    <p>Between 2010 and 2025, Victoria experienced pronounced dry and wet periods, testing the resilience of its water infrastructure. Statewide storage varied between about 3.23 million ML (min) and 12.14 million ML (max), a ~73% swing from peak. This visualisation shows an observed 3–4 month lag between rainfall and storage response, highlights regional disparities in water security, and examines why capacity alone does not guarantee availability. Using the our datasets spanning 28 rainfall stations and 66 reservoirs across 17 systems, we trace how Victoria's water systems responded to climate variability in a state serving around 7.0 million people (Sept 2024 estimate).</p>
+    <p><strong>Station</strong> refers to a Bureau of Meteorology rainfall monitoring site that records monthly rain at a specific location. <strong>Reservoir</strong> refers to an individual water storage (with its own capacity and measured volume). <strong>Reservoir system</strong> groups multiple reservoirs that operate together for a supply region (e.g., Melbourne or Goulburn), where system‑level figures often sum or aggregate across the included storages.</p>
+  </section>
+
+  <div class="grid">
+    <section>
+      <h2>The Rainfall Divide: Coastal Abundance vs. Inland Scarcity</h2>
+      <p class="description">Geographic analysis of 28 rainfall monitoring stations reveals a coastal–inland climatic gradient. Explore how monthly rainfall patterns vary across regions and years, exposing a persistent east–west gradient that challenges equitable water distribution.</p>
+      <div id="v1"></div>
+      <p class="insight"><strong>Critical Discovery:</strong> Stations consistently show higher rainfall in coastal and mountain areas compared with inland regions, reinforcing a geographic imbalance that complicates water distribution and planning. Specific consumption shares and infrastructure lengths are not derived from the our datasets and are therefore omitted.</p>
+    </section>
+    <section>
+      <h2>Seasonal Predictability Meets Climate Chaos</h2>
+      <p class="description">190 months of rainfall data condensed into a single view reveals both the reliability of Victoria's winter-wet climate and the emergence of unpredictable extremes. Each cell represents average monthly rainfall across all monitoring stations.</p>
+      <div id="v5"></div>
+      <p class="insight"><strong>Observed Pattern:</strong> Winter months (Jun-Aug) average about 49mm across stations, but spring variability is high. October monthly means ranged from 7.2mm (2025) to 107.1mm (2022). The driest 12-month period based on rolling means was Jun 2024-May 2025 at 23.8mm, about 42% below the overall mean.</p>
+    </section>
+    <section>
+      <h2>System-Level Vulnerability: When Big Doesn't Mean Secure</h2>
+      <p class="description">Track the rise and fall of water storage across Victoria's major water systems. The Melbourne system holds around 1,812,175 ML of capacity and dropped below 50% during parts of 2019–2020.</p>
+      <div id="v3"></div>
+      <p class="insight"><strong>Infrastructure Reality Check:</strong> Melbourne accounts for about 14.7% of statewide capacity. Regional systems showed larger swings: Goulburn varied by 2.80 million ML (~73% of its capacity) versus Melbourne's 1.18 million ML (~65%). Smaller systems like Werribee and Geelong ranged from about 9.8% to 99.1% and 29.6% to 100.1% full, respectively.</p>
+    </section>
+
+    <section>
+      <h2>The Capacity Paradox: Size vs. Security</h2>
+      <p class="description">Examine the relationship between reservoir size and storage levels across Victoria's storages. Circle size represents actual stored volume, revealing why bigger isn't always better for water security.</p>
+      <div id="v4"></div>
+      <p class="insight"><strong>Counterintuitive Finding:</strong> Catchment location and inflows often matter more than size: several smaller storages can maintain higher fullness than much larger ones, depending on conditions. The bubble chart highlights these contrasts without implying a single rule.</p>
+    </section>
+
+    <section class="wide">
+      <h2>The 3–4 Month Lag: Why Rainfall Today Means Water Tomorrow</h2>
+      <p class="description">Fifteen years of synchronized rainfall and storage data exposes the critical time lag between precipitation and reservoir replenishment. This relationship determines when water restrictions begin, and when they can safely end.</p>
+      <div id="v2"></div>
+      <p class="insight"><strong>Policy-Relevant Insight:</strong> In our dataset, statewide storage responds to rainfall with an observed 3–4 month lag. For example, the June 2016 rainfall increase (~77mm average across stations) was followed by a large storage rise by September 2016 (+3.58M ML statewide). Understanding this delay helps set realistic expectations for recovery timing.</p>
+    </section>
+  </div>
+
+  <section class="conclusions">
+    <h2>Four Lessons for Victoria's Water Future</h2>
+    <p><strong>1. Geography matters:</strong> Coastal and upland catchments receive higher rainfall than inland areas, complicating equitable distribution. <strong>2. Capacity isn't everything:</strong> System behavior depends on both capacity and catchment conditions; some large systems still show substantial swings. <strong>3. Observable lag:</strong> Statewide storage tends to respond to rainfall with an approximate 3-4 month lag in our dataset. <strong>4. Variability:</strong> Year-to-year spring rainfall varies substantially, reinforcing the need for flexible planning. All figures above are derived from our dataset.</p>
+  </section>
+
+  <footer>
+    <h3>Data Sources & Methodology</h3>
+    <div class="data-sources">
+      <p><strong>Rainfall Data:</strong> Bureau of Meteorology (BOM) monthly rainfall data for Victoria weather stations, 2010-2025</p>
+      <p><strong>Reservoir Storage:</strong> Victorian Water Resources data, monthly storage volumes and capacity data, 2010-2025</p>
+      <p><strong>Processing:</strong> Data aggregated monthly, normalized by capacity where indicated. No significant data wrangling performed.</p>
+      <p><strong>Context:</strong> Victoria population approx 7,012,962 (Sept 2024 estimate). Sources: <a href="https://www.abs.gov.au/statistics/people/population/national-state-and-territory-population/latest-release" target="_blank" rel="noopener">ABS National, state and territory population</a>, and <a href="https://en.wikipedia.org/wiki/Victoria_(state)" target="_blank" rel="noopener">Wikipedia: Victoria (state)</a>.</p>
+    </div>
+    <p class="copyright">© 2025 Rahul Pejathaya (32993226) | Created for FIT3179 Data Visualisation 2, Monash University</p>
+  </footer>
+</main>
+
+<script>
+const opts = {
+  actions: false,
+  renderer: 'svg',
+  patch: (spec) => {
+    const next = { ...spec };
+    if (next.width === undefined) next.width = 'container';
+    next.height = 'container';
+    next.autosize = { type: 'fit', contains: 'padding', resize: true };
+    return next;
+  }
+};
+function sizeChartToSection(sel, view) {
+  const container = document.querySelector(sel);
+  if (!container) return;
+  const compute = () => {
+    const section = container.closest('section');
+    const secRect = section?.getBoundingClientRect();
+    const totalHeight = secRect ? secRect.height : container.parentElement?.clientHeight || window.innerHeight * 0.7;
+    const titleEl = section?.querySelector('h2');
+    const descEl = section?.querySelector('.description');
+    const insightEl = section?.querySelector('.insight');
+    const uiHeight = (titleEl?.offsetHeight || 0) + (descEl?.offsetHeight || 0) + (insightEl?.offsetHeight || 0);
+    const controlsEl = container.querySelector('.vega-bindings');
+    const controlsH = controlsEl?.offsetHeight || 0;
+    let chartRowHeight = container.clientHeight;
+    if (!chartRowHeight || chartRowHeight < 50) {
+      chartRowHeight = Math.max(200, totalHeight - uiHeight - 24);
+    }
+    const width = container.clientWidth || (section ? section.clientWidth : window.innerWidth);
+    const height = Math.max(200, chartRowHeight - controlsH);
+    try { view.width(width).height(height).runAsync(); } catch (e) {}
+  };
+  compute();
+  const ro = new ResizeObserver(compute);
+  ro.observe(container);
+  const section = container.closest('section');
+  if (section) ro.observe(section);
+  window.addEventListener('resize', compute, { passive: true });
+}
+function wireTrendBounds(sel, view) {
+  const container = document.querySelector(sel);
+  if (!container) return;
+  const minInput = container.querySelector('input[name="pYearMin"]');
+  const maxInput = container.querySelector('input[name="pYearMax"]');
+  if (!minInput || !maxInput) return;
+  const clamp = (active) => {
+    let min = parseInt(minInput.value, 10);
+    let max = parseInt(maxInput.value, 10);
+    if (Number.isNaN(min) || Number.isNaN(max)) return;
+    if (max < min) {
+      if (active === 'min') { max = min; maxInput.value = String(max); try { view.signal('pYearMax', max).runAsync(); } catch {} }
+      else { min = max; minInput.value = String(min); try { view.signal('pYearMin', min).runAsync(); } catch {} }
+    }
+    minInput.max = String(max);
+    maxInput.min = String(min);
+  };
+  clamp();
+  minInput.addEventListener('input', () => clamp('min'));
+  maxInput.addEventListener('input', () => clamp('max'));
+}
+const mount = (sel, spec) => vegaEmbed(sel, spec, opts)
+  .then(res => { sizeChartToSection(sel, res.view); if (sel === '#v2') wireTrendBounds(sel, res.view); return res; })
+  .catch(err => {
+    console.error(`Embed failed for ${spec}:`, err);
+    const el = document.querySelector(sel);
+    if (el) el.innerHTML = `<pre style="color:#b00020">Failed to load ${spec}: ${String(err)}</pre>`;
+  });
+mount("#v1", "visuals/rainfall_map.json");
+mount("#v2", "visuals/rainfall_vs_storage.json");
+mount("#v3", "visuals/system_area.json");
+mount("#v4", "visuals/reservoir_bubble.json");
+mount("#v5", "visuals/rainfall_heatmap.json");
+</script>
+</body>
+</html>
+

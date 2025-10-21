@@ -1,0 +1,210 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Reservoir snapshot: Capacity vs % full",
+  "width": "container",
+  "height": 430,
+  "data": {
+    "url": "data/VIC_Reservoir_Storage_Monthly_2010_2025.csv"
+  },
+  "params": [
+    {
+      "name": "pYear",
+      "value": 2025,
+      "bind": {
+        "input": "range",
+        "min": 2010,
+        "max": 2025,
+        "step": 1,
+        "name": "Year: "
+      }
+    },
+    {
+      "name": "pMonth",
+      "value": 9,
+      "bind": {
+        "input": "range",
+        "min": 1,
+        "max": 12,
+        "step": 1,
+        "name": "Month: "
+      }
+    }
+  ],
+  "transform": [
+    {
+      "filter": "datum.Year == pYear && datum.Month == pMonth"
+    },
+    {
+      "filter": "datum.System != null && datum.System != ''"
+    },
+    {
+      "aggregate": [
+        {
+          "op": "max",
+          "field": "Capacity_ML",
+          "as": "Capacity_ML"
+        },
+        {
+          "op": "sum",
+          "field": "Volume_ML",
+          "as": "Volume_ML"
+        },
+        {
+          "op": "mean",
+          "field": "Percent_Full",
+          "as": "Pct_full"
+        }
+      ],
+      "groupby": ["Reservoir", "System"]
+    },
+    {
+      "calculate": "min(datum.Pct_full, 110)",
+      "as": "Pct_full_capped"
+    }
+  ],
+  "layer": [
+    {
+      "params": [
+        {
+          "name": "hover",
+          "select": {
+            "type": "point",
+            "on": "mouseover",
+            "clear": "mouseout"
+          }
+        }
+      ],
+      "mark": {"type": "circle"},
+      "encoding": {
+        "opacity": {
+          "condition": {
+            "param": "hover",
+            "empty": false,
+            "value": 1
+          },
+          "value": 0.8
+        },
+        "stroke": {
+          "condition": {
+            "param": "hover",
+            "empty": false,
+            "value": "black"
+          },
+          "value": null
+        },
+        "strokeWidth": {
+          "condition": {
+            "param": "hover",
+            "empty": false,
+            "value": 3
+          },
+          "value": 0
+        },
+        "x": {
+          "field": "Capacity_ML",
+          "type": "quantitative",
+          "title": "Capacity (ML)",
+          "axis": {"tickCount": 5, "format": "~s"}
+        },
+        "y": {
+          "field": "Pct_full_capped",
+          "type": "quantitative",
+          "title": "Percent Full (%)",
+          "scale": {"domain": [0, 110]}
+        },
+        "size": {
+          "condition": {
+            "param": "hover",
+            "empty": false,
+            "field": "Volume_ML",
+            "type": "quantitative",
+            "scale": {
+              "range": [70, 1100]
+            }
+          },
+          "field": "Volume_ML",
+          "type": "quantitative",
+          "scale": {
+            "range": [50, 1000]
+          },
+          "legend": null
+        },
+        "color": {
+          "field": "System",
+          "type": "nominal",
+          "scale": {
+            "scheme": "tableau10"
+          },
+          "legend": {
+            "orient": "bottom",
+            "direction": "horizontal",
+            "title": "System",
+            "columns": 4,
+            "symbolLimit": 0
+          }
+        },
+        "tooltip": [
+          {"field": "Reservoir", "type": "nominal"},
+          {"field": "System", "type": "nominal"},
+          {"field": "Capacity_ML", "type": "quantitative", "title": "Capacity (ML)", "format": ",.0f"},
+          {"field": "Volume_ML", "type": "quantitative", "title": "Volume (ML)", "format": ",.0f"},
+          {"field": "Pct_full", "type": "quantitative", "title": "Percent Full (%)", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "data": {"values": [{"x": 800000, "y": 30, "label": "CAPACITY PARADOX"}]},
+      "mark": {"type": "text", "fontSize": 11, "fontWeight": "bold", "color": "#000000", "dy": -8},
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"field": "y", "type": "quantitative"},
+        "text": {"field": "label"}
+      }
+    },
+    {
+      "data": {"values": [{"x": 800000, "y": 30}]},
+      "mark": {"type": "text", "fontSize": 10, "fontStyle": "italic", "color": "#000000", "dy": 4},
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"field": "y", "type": "quantitative"},
+        "text": {"value": "Large size ≠ Water security"}
+      }
+    },
+    {
+      "data": {"values": [{"x": 250000, "y": 110, "label": "EFFICIENT SMALL STORAGES"}]},
+      "mark": {"type": "text", "fontSize": 10, "fontWeight": "600", "color": "#000000", "dy": -20},
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"field": "y", "type": "quantitative"},
+        "text": {"field": "label"}
+      }
+    },
+    {
+      "data": {"values": [{"x": 250000, "y": 110}]},
+      "mark": {"type": "text", "fontSize": 10, "fontStyle": "italic", "color": "#000000", "dy": -8},
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"field": "y", "type": "quantitative"},
+        "text": {"value": "Catchment location matters most"}
+      }
+    },
+    {
+      "data": {"values": [{"x": 500000, "y": 55}]},
+      "mark": {"type": "rule", "strokeDash": [4, 4], "color": "#9e9e9e", "opacity": 0.5},
+      "encoding": {
+        "y": {"datum": 55},
+        "x": {"datum": 0},
+        "x2": {"datum": 1200000}
+      }
+    },
+    {
+      "data": {"values": [{"x": 1050000, "y": 55}]},
+      "mark": {"type": "text", "fontSize": 8, "color": "#000000", "dx": -35, "dy": -3},
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"field": "y", "type": "quantitative"},
+        "text": {"value": "Critical threshold (55%)"}
+      }
+    }
+  ]
+}

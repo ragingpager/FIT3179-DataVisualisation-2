@@ -1,0 +1,253 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Reservoir systems stacked area (volume ML, 2010-2025)",
+  "data": {"url": "data/VIC_Reservoir_System_Monthly_Volume_2010_2025.csv"},
+
+  "params": [
+    {
+      "name": "system_filter",
+      "value": "All",
+      "bind": {
+        "input": "select",
+        "options": [
+          "All",
+          "Melbourne",
+          "Goulburn",
+          "Thomson/Macalister",
+          "Werribee",
+          "Geelong",
+          "Glenelg/Wimmera",
+          "South Gippsland",
+          "Ovens",
+          "Broken",
+          "Loddon",
+          "Campaspe",
+          "Ballarat",
+          "Bendigo",
+          "Latrobe",
+          "Maribyrnong",
+          "Murray"
+        ],
+        "labels": [
+          "All",
+          "Melbourne",
+          "Goulburn",
+          "Thomson + Macalister",
+          "Werribee",
+          "Geelong",
+          "Wimmera",
+          "Gippsland",
+          "Ovens",
+          "Broken",
+          "Loddon",
+          "Campaspe",
+          "Ballarat",
+          "Bendigo",
+          "Latrobe",
+          "Maribyrnong",
+          "Murray"
+        ],
+        "name": "Select System: "
+      }
+    }
+  ],
+
+  "transform": [
+    {"filter": "isValid(datum.System) && datum.System != ''"},
+    {"calculate": "toDate(datum.Year + '-' + datum.Month + '-01')", "as": "Date"}
+  ],
+  "layer": [
+    {
+      "transform": [{"filter": "system_filter == 'All' || datum.System == system_filter"}],
+      "mark": {"type": "area", "interpolate": "monotone"},
+      "encoding": {
+        "x": {"field": "Date", "type": "temporal", "title": "Month"},
+        "y": {
+          "field": "TotalVolume_ML",
+          "type": "quantitative",
+          "title": "Volume (ML)",
+          "axis": {"format": ",.0f"},
+          "scale": {"nice": true}
+        },
+        "color": {
+          "field": "System",
+          "type": "nominal",
+          "legend": {"title": "System", "orient": "bottom", "columns": 4},
+          "scale": {"scheme": "tableau10"}
+        },
+        "tooltip": [
+          {"field": "Date", "type": "temporal", "format": "%b %Y"},
+          {"field": "System"},
+          {"field": "TotalVolume_ML", "title": "Volume (ML)", "format": ",.0f"}
+        ]
+      }
+    },
+
+    {
+      "transform": [
+        {
+          "aggregate": [{"op": "sum", "field": "TotalVolume_ML", "as": "AllVol"}],
+          "groupby": ["Date"]
+        },
+        {"window": [{"op": "rank", "as": "rAsc"}], "sort": [{"field": "AllVol", "order": "ascending"}]},
+        {"filter": "datum.rAsc == 1"}
+      ],
+      "mark": {"type": "rule", "color": "#37474f", "strokeDash": [5,4]},
+      "encoding": {
+        "x": {"field": "Date", "type": "temporal"},
+        "opacity": {
+          "condition": {"test": "system_filter == 'All'", "value": 1},
+          "value": 0
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "aggregate": [{"op": "sum", "field": "TotalVolume_ML", "as": "AllVol"}],
+          "groupby": ["Date"]
+        },
+        {"window": [{"op": "rank", "as": "rAsc"}], "sort": [{"field": "AllVol", "order": "ascending"}]},
+        {"filter": "datum.rAsc == 1"}
+      ],
+      "mark": {"type": "text", "align": "left", "dx": 6, "dy": -6, "color": "#000000", "fontWeight": "bold"},
+      "encoding": {
+        "x": {"field": "Date", "type": "temporal"},
+        "y": {"field": "AllVol", "type": "quantitative"},
+        "text": {"value": "Min total"},
+        "opacity": {
+          "condition": {"test": "system_filter == 'All'", "value": 1},
+          "value": 0
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "aggregate": [{"op": "sum", "field": "TotalVolume_ML", "as": "AllVol"}],
+          "groupby": ["Date"]
+        },
+        {"window": [{"op": "rank", "as": "rDesc"}], "sort": [{"field": "AllVol", "order": "descending"}]},
+        {"filter": "datum.rDesc == 1"}
+      ],
+      "mark": {"type": "rule", "color": "#37474f"},
+      "encoding": {
+        "x": {"field": "Date", "type": "temporal"},
+        "opacity": {
+          "condition": {"test": "system_filter == 'All'", "value": 1},
+          "value": 0
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "aggregate": [{"op": "sum", "field": "TotalVolume_ML", "as": "AllVol"}],
+          "groupby": ["Date"]
+        },
+        {"window": [{"op": "rank", "as": "rDesc"}], "sort": [{"field": "AllVol", "order": "descending"}]},
+        {"filter": "datum.rDesc == 1"}
+      ],
+      "mark": {"type": "text", "align": "left", "dx": 6, "dy": -6, "color": "#000000", "fontWeight": "bold"},
+      "encoding": {
+        "x": {"field": "Date", "type": "temporal"},
+        "y": {"field": "AllVol", "type": "quantitative"},
+        "text": {"value": "Max total"},
+        "opacity": {
+          "condition": {"test": "system_filter == 'All'", "value": 1},
+          "value": 0
+        }
+      }
+    },
+    {
+      "data": {"values": [{"date": "2016-10-01", "label": "MELBOURNE SYSTEM DOMINANCE"}]},
+      "transform": [
+        {"calculate": "toDate(datum.date)", "as": "Date"}
+      ],
+      "mark": {"type": "text", "fontSize": 10, "fontWeight": "600", "color": "#000000", "dy": -80},
+      "encoding": {
+        "x": {"field": "Date", "type": "temporal"},
+        "y": {"datum": 2800000},
+        "text": {"field": "label"},
+        "opacity": {
+          "condition": {"test": "system_filter == 'All'", "value": 1},
+          "value": 0
+        }
+      }
+    },
+    {
+      "data": {"values": [{"date": "2016-10-01"}]},
+      "transform": [
+        {"calculate": "toDate(datum.date)", "as": "Date"}
+      ],
+      "mark": {"type": "text", "fontSize": 10, "fontStyle": "italic", "color": "#000000", "dy": -68},
+      "encoding": {
+        "x": {"field": "Date", "type": "temporal"},
+        "y": {"datum": 2800000},
+        "text": {"value": "14.7% of state capacity, 1.812M ML"},
+        "opacity": {
+          "condition": {"test": "system_filter == 'All'", "value": 1},
+          "value": 0
+        }
+      }
+    },
+    {
+      "data": {"values": [{"date": "2019-07-01", "label": "REGIONAL VOLATILITY"}]},
+      "transform": [
+        {"calculate": "toDate(datum.date)", "as": "Date"}
+      ],
+      "mark": {"type": "text", "fontSize": 10, "fontWeight": "600", "color": "#000000", "dy": -80},
+      "encoding": {
+        "x": {"field": "Date", "type": "temporal"},
+        "y": {"datum": 1600000},
+        "text": {"field": "label"},
+        "opacity": {
+          "condition": {"test": "system_filter == 'All'", "value": 1},
+          "value": 0
+        }
+      }
+    },
+    {
+      "data": {"values": [{"date": "2019-07-01"}]},
+      "transform": [
+        {"calculate": "toDate(datum.date)", "as": "Date"}
+      ],
+      "mark": {"type": "text", "fontSize": 10, "fontStyle": "italic", "color": "#000000", "dy": -68},
+      "encoding": {
+        "x": {"field": "Date", "type": "temporal"},
+        "y": {"datum": 1600000},
+        "text": {"value": "Goulburn: 2.80M ML (73%) vs Melbourne: 1.18M ML (65%)"},
+        "opacity": {
+          "condition": {"test": "system_filter == 'All'", "value": 1},
+          "value": 0
+        }
+      }
+    },
+    {
+      "data": {"values": [{"x1": "2019-01-01", "x2": "2020-03-01"}]},
+      "transform": [
+        {"calculate": "toDate(datum.x1)", "as": "Date1"},
+        {"calculate": "toDate(datum.x2)", "as": "Date2"}
+      ],
+      "mark": {"type": "rect", "color": "#ffebee", "opacity": 0.3},
+      "encoding": {
+        "x": {"field": "Date1", "type": "temporal"},
+        "x2": {"field": "Date2"},
+        "y": {"datum": 0},
+        "y2": {"datum": 3200000},
+        "opacity": {
+          "condition": {"test": "system_filter == 'All'", "value": 0.3},
+          "value": 0
+        }
+      }
+    }
+  ],
+
+  "width": "container",
+  "height": 450,
+  "config": {
+    "view": {"stroke": null},
+    "axis": {"labelLimit": 100},
+    "transition": null
+  }
+}
