@@ -49,6 +49,162 @@
           {"field": "Statewide_Percent_Full", "title": "Storage (%)", "format": ".1f"}
         ]
       }
+    },
+    {
+      "data": {"url": "data/VIC_Monthly_Rainfall_2010_2025.csv"},
+      "transform": [
+        {"filter": "datum['Rainfall (mm)'] != 'MISSING'"},
+        {"calculate": "toNumber(datum['Rainfall (mm)'])", "as": "Rainfall_num"},
+        {"aggregate": [{"op": "mean", "field": "Rainfall_num", "as": "AvgRain_mm"}], "groupby": ["Year","Month"]},
+        {"calculate": "toDate(datum.Year + '-' + datum.Month + '-01')", "as": "Date"},
+        {"filter": "year(datum.Date) >= pYearMin && year(datum.Date) <= pYearMax"},
+        {"filter": "showRainfall"},
+        {"window": [{"op": "min", "field": "AvgRain_mm", "as": "MinRain"}], "frame": [null, null]},
+        {"filter": "datum.AvgRain_mm == datum.MinRain"}
+      ],
+      "mark": {"type": "rule", "strokeWidth": 2, "strokeDash": [5, 5]},
+      "encoding": {
+        "x": {"field": "Date", "type": "temporal", "axis": null},
+        "color": {"value": "#1565c0"},
+        "tooltip": [
+          {"field": "Date", "type": "temporal", "title": "Month", "format": "%b %Y"},
+          {"field": "AvgRain_mm", "title": "Min Rainfall (mm)", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "data": {"url": "data/VIC_Monthly_Rainfall_2010_2025.csv"},
+      "transform": [
+        {"filter": "datum['Rainfall (mm)'] != 'MISSING'"},
+        {"calculate": "toNumber(datum['Rainfall (mm)'])", "as": "Rainfall_num"},
+        {"aggregate": [{"op": "mean", "field": "Rainfall_num", "as": "AvgRain_mm"}], "groupby": ["Year","Month"]},
+        {"calculate": "toDate(datum.Year + '-' + datum.Month + '-01')", "as": "Date"},
+        {"filter": "year(datum.Date) >= pYearMin && year(datum.Date) <= pYearMax"},
+        {"filter": "showRainfall"},
+        {"window": [{"op": "max", "field": "AvgRain_mm", "as": "MaxRain"}], "frame": [null, null]},
+        {"filter": "datum.AvgRain_mm == datum.MaxRain"}
+      ],
+      "mark": {"type": "rule", "strokeWidth": 2, "strokeDash": [5, 5]},
+      "encoding": {
+        "x": {"field": "Date", "type": "temporal", "axis": null},
+        "color": {"value": "#1565c0"},
+        "tooltip": [
+          {"field": "Date", "type": "temporal", "title": "Month", "format": "%b %Y"},
+          {"field": "AvgRain_mm", "title": "Max Rainfall (mm)", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "data": {"url": "data/VIC_Monthly_Rainfall_2010_2025.csv"},
+      "transform": [
+        {"filter": "datum['Rainfall (mm)'] != 'MISSING'"},
+        {"calculate": "toNumber(datum['Rainfall (mm)'])", "as": "Rainfall_num"},
+        {"aggregate": [{"op": "mean", "field": "Rainfall_num", "as": "AvgRain_mm"}], "groupby": ["Year","Month"]},
+        {"calculate": "toDate(datum.Year + '-' + datum.Month + '-01')", "as": "Date"},
+        {"filter": "year(datum.Date) >= pYearMin && year(datum.Date) <= pYearMax"},
+        {"filter": "showRainfall"},
+        {"window": [{"op": "min", "field": "AvgRain_mm", "as": "MinRain"}], "frame": [null, null]},
+        {"filter": "datum.AvgRain_mm == datum.MinRain"}
+      ],
+      "mark": {"type": "text", "align": "left", "baseline": "middle", "dx": 5, "fontSize": 10, "fontWeight": "bold"},
+      "encoding": {
+        "x": {"field": "Date", "type": "temporal", "axis": null},
+        "y": {"field": "AvgRain_mm", "type": "quantitative", "axis": null},
+        "text": {"value": "Min Rainfall"},
+        "color": {"value": "#1565c0"}
+      }
+    },
+    {
+      "data": {"url": "data/VIC_Monthly_Rainfall_2010_2025.csv"},
+      "transform": [
+        {"filter": "datum['Rainfall (mm)'] != 'MISSING'"},
+        {"calculate": "toNumber(datum['Rainfall (mm)'])", "as": "Rainfall_num"},
+        {"aggregate": [{"op": "mean", "field": "Rainfall_num", "as": "AvgRain_mm"}], "groupby": ["Year","Month"]},
+        {"calculate": "toDate(datum.Year + '-' + datum.Month + '-01')", "as": "Date"},
+        {"filter": "year(datum.Date) >= pYearMin && year(datum.Date) <= pYearMax"},
+        {"filter": "showRainfall"},
+        {"window": [{"op": "max", "field": "AvgRain_mm", "as": "MaxRain"}], "frame": [null, null]},
+        {"filter": "datum.AvgRain_mm == datum.MaxRain"}
+      ],
+      "mark": {"type": "text", "align": "left", "baseline": "middle", "dx": 5, "fontSize": 10, "fontWeight": "bold"},
+      "encoding": {
+        "x": {"field": "Date", "type": "temporal", "axis": null},
+        "y": {"field": "AvgRain_mm", "type": "quantitative", "axis": null},
+        "text": {"value": "Max Rainfall"},
+        "color": {"value": "#1565c0"}
+      }
+    },
+    {
+      "data": {"url": "data/VIC_Statewide_Storage_Percent_2010_2025.csv"},
+      "transform": [
+        {"calculate": "toDate(datum.Year + '-' + datum.Month + '-01')", "as": "Date"},
+        {"filter": "year(datum.Date) >= pYearMin && year(datum.Date) <= pYearMax"},
+        {"filter": "showStorage"},
+        {"window": [{"op": "min", "field": "Statewide_Percent_Full", "as": "MinStorage"}], "frame": [null, null]},
+        {"filter": "datum.Statewide_Percent_Full == datum.MinStorage"}
+      ],
+      "mark": {"type": "rule", "strokeWidth": 2, "strokeDash": [5, 5]},
+      "encoding": {
+        "x": {"field": "Date", "type": "temporal", "axis": null},
+        "color": {"value": "#2e7d32"},
+        "tooltip": [
+          {"field": "Date", "type": "temporal", "title": "Month", "format": "%b %Y"},
+          {"field": "Statewide_Percent_Full", "title": "Min Storage (%)", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "data": {"url": "data/VIC_Statewide_Storage_Percent_2010_2025.csv"},
+      "transform": [
+        {"calculate": "toDate(datum.Year + '-' + datum.Month + '-01')", "as": "Date"},
+        {"filter": "year(datum.Date) >= pYearMin && year(datum.Date) <= pYearMax"},
+        {"filter": "showStorage"},
+        {"window": [{"op": "max", "field": "Statewide_Percent_Full", "as": "MaxStorage"}], "frame": [null, null]},
+        {"filter": "datum.Statewide_Percent_Full == datum.MaxStorage"}
+      ],
+      "mark": {"type": "rule", "strokeWidth": 2, "strokeDash": [5, 5]},
+      "encoding": {
+        "x": {"field": "Date", "type": "temporal", "axis": null},
+        "color": {"value": "#2e7d32"},
+        "tooltip": [
+          {"field": "Date", "type": "temporal", "title": "Month", "format": "%b %Y"},
+          {"field": "Statewide_Percent_Full", "title": "Max Storage (%)", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "data": {"url": "data/VIC_Statewide_Storage_Percent_2010_2025.csv"},
+      "transform": [
+        {"calculate": "toDate(datum.Year + '-' + datum.Month + '-01')", "as": "Date"},
+        {"filter": "year(datum.Date) >= pYearMin && year(datum.Date) <= pYearMax"},
+        {"filter": "showStorage"},
+        {"window": [{"op": "min", "field": "Statewide_Percent_Full", "as": "MinStorage"}], "frame": [null, null]},
+        {"filter": "datum.Statewide_Percent_Full == datum.MinStorage"}
+      ],
+      "mark": {"type": "text", "align": "left", "baseline": "middle", "dx": 5, "fontSize": 10, "fontWeight": "bold"},
+      "encoding": {
+        "x": {"field": "Date", "type": "temporal", "axis": null},
+        "y": {"field": "Statewide_Percent_Full", "type": "quantitative", "axis": null},
+        "text": {"value": "Min Storage"},
+        "color": {"value": "#2e7d32"}
+      }
+    },
+    {
+      "data": {"url": "data/VIC_Statewide_Storage_Percent_2010_2025.csv"},
+      "transform": [
+        {"calculate": "toDate(datum.Year + '-' + datum.Month + '-01')", "as": "Date"},
+        {"filter": "year(datum.Date) >= pYearMin && year(datum.Date) <= pYearMax"},
+        {"filter": "showStorage"},
+        {"window": [{"op": "max", "field": "Statewide_Percent_Full", "as": "MaxStorage"}], "frame": [null, null]},
+        {"filter": "datum.Statewide_Percent_Full == datum.MaxStorage"}
+      ],
+      "mark": {"type": "text", "align": "left", "baseline": "middle", "dx": 5, "fontSize": 10, "fontWeight": "bold"},
+      "encoding": {
+        "x": {"field": "Date", "type": "temporal", "axis": null},
+        "y": {"field": "Statewide_Percent_Full", "type": "quantitative", "axis": null},
+        "text": {"value": "Max Storage"},
+        "color": {"value": "#2e7d32"}
+      }
     }
   ],
   "resolve": {"scale": {"y": "independent"}}

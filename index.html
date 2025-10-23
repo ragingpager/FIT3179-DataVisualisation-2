@@ -18,66 +18,66 @@
 <body>
 <header>
   <h1>Victoria's Water Story: Rainfall & Reservoir Storage</h1>
-  <p class="subtitle">Understanding the relationship between rainfall and water storage across Victoria (2010-2025)</p>
+  <p class="subtitle">Exploring rainfall and water storage patterns across Victoria (2010-2025)</p>
   <p class="author">By Rahul Pejathaya (32993226) | FIT3179 Data Visualisation 2 | October 2025</p>
 </header>
 
 <main>
     <section class="intro">
       <h2>Victoria's Water Crisis and Recovery: A 15-Year Story</h2>
-    <p>Between 2010 and 2025, Victoria experienced pronounced dry and wet periods, testing the resilience of its water infrastructure. Statewide storage varied between about 3.23 million ML (min) and 12.14 million ML (max), a ~73% swing from peak. This visualisation shows an observed 3–4 month lag between rainfall and storage response, highlights regional disparities in water security, and examines why capacity alone does not guarantee availability. Using the our datasets spanning 28 rainfall stations and 66 reservoirs across 17 systems, we trace how Victoria's water systems responded to climate variability in a state serving around 7.0 million people (Sept 2024 estimate).</p>
-    <p><strong>Station</strong> refers to a Bureau of Meteorology rainfall monitoring site that records monthly rain at a specific location. <strong>Reservoir</strong> refers to an individual water storage (with its own capacity and measured volume). <strong>Reservoir system</strong> groups multiple reservoirs that operate together for a supply region (e.g., Melbourne or Goulburn), where system‑level figures often sum or aggregate across the included storages.</p>
+    <p>Victoria experienced dramatic dry and wet periods between 2010-2025. Statewide storage ranged from 3.23 to 12.14 million ML. This analysis reveals a 3-4 month lag between rainfall and storage. Data covers 28 rainfall stations and 66 reservoirs across 17 systems. Victoria serves approximately 7.0 million people (Sept 2024 estimate).</p>
+    <p><strong>Station:</strong> Rainfall monitoring site recording monthly precipitation. <strong>Reservoir:</strong> Individual water storage with specific capacity. <strong>System:</strong> Multiple reservoirs operating together for a region.</p>
   </section>
 
   <div class="grid">
     <section>
       <h2>The Rainfall Divide: Coastal Abundance vs. Inland Scarcity</h2>
-      <p class="description">Geographic analysis of 28 rainfall monitoring stations reveals a coastal–inland climatic gradient. Explore how monthly rainfall patterns vary across regions and years, exposing a persistent east–west gradient that challenges equitable water distribution.</p>
+      <p class="description">Analysis of 28 stations reveals a coastal-inland gradient. Monthly patterns vary significantly across regions and years. An east-west divide challenges equitable water distribution.</p>
       <div id="v1"></div>
-      <p class="insight"><strong>Critical Discovery:</strong> Stations consistently show higher rainfall in coastal and mountain areas compared with inland regions, reinforcing a geographic imbalance that complicates water distribution and planning. Specific consumption shares and infrastructure lengths are not derived from the our datasets and are therefore omitted.</p>
+      <p class="insight"><strong>Key Finding:</strong> Coastal and mountain areas receive consistently higher rainfall. Inland regions face persistent water scarcity. Geographic imbalance complicates distribution and planning.</p>
     </section>
     <section>
       <h2>Seasonal Predictability Meets Climate Chaos</h2>
-      <p class="description">190 months of rainfall data condensed into a single view reveals both the reliability of Victoria's winter-wet climate and the emergence of unpredictable extremes. Each cell represents average monthly rainfall across all monitoring stations.</p>
+      <p class="description">190 months of rainfall condensed into one view. Winter brings reliable rainfall, spring shows unpredictable extremes. Each cell shows average monthly rainfall across all stations.</p>
       <div id="v5"></div>
-      <p class="insight"><strong>Observed Pattern:</strong> Winter months (Jun-Aug) average about 49mm across stations, but spring variability is high. October monthly means ranged from 7.2mm (2025) to 107.1mm (2022). The driest 12-month period based on rolling means was Jun 2024-May 2025 at 23.8mm, about 42% below the overall mean.</p>
+      <p class="insight"><strong>Pattern:</strong> Winter (Jun-Aug) averages 49mm, fairly reliable. Spring varies dramatically—October ranged from 7.2mm to 107.1mm. Driest period: Jun 2024-May 2025 averaged just 23.8mm monthly.</p>
     </section>
     <section>
       <h2>System-Level Vulnerability: When Big Doesn't Mean Secure</h2>
-      <p class="description">Track the rise and fall of water storage across Victoria's major water systems. The Melbourne system holds around 1,812,175 ML of capacity and dropped below 50% during parts of 2019–2020.</p>
+      <p class="description">Track water storage across Victoria's major systems. Melbourne holds 1,812,175 ML capacity but dropped below 50% in 2019-2020. <strong>Note: Not all systems have large volumes; some appear small.</strong></p>
       <div id="v3"></div>
-      <p class="insight"><strong>Infrastructure Reality Check:</strong> Melbourne accounts for about 14.7% of statewide capacity. Regional systems showed larger swings: Goulburn varied by 2.80 million ML (~73% of its capacity) versus Melbourne's 1.18 million ML (~65%). Smaller systems like Werribee and Geelong ranged from about 9.8% to 99.1% and 29.6% to 100.1% full, respectively.</p>
+      <p class="insight"><strong>Reality:</strong> Melbourne is 14.7% of statewide capacity. Goulburn varied by 2.80 million ML (73% of capacity). Melbourne varied by 1.18 million ML (65%). Smaller systems showed extreme swings: Werribee 9.8-99.1%, Geelong 29.6-100.1%.</p>
     </section>
 
     <section>
       <h2>The Capacity Paradox: Size vs. Security</h2>
-      <p class="description">Examine the relationship between reservoir size and storage levels across Victoria's storages. Circle size represents actual stored volume, revealing why bigger isn't always better for water security.</p>
+      <p class="description">Examine reservoir size versus storage levels across Victoria. Circle size shows actual stored volume. Bigger isn't always better for water security.</p>
       <div id="v4"></div>
-      <p class="insight"><strong>Counterintuitive Finding:</strong> Catchment location and inflows often matter more than size: several smaller storages can maintain higher fullness than much larger ones, depending on conditions. The bubble chart highlights these contrasts without implying a single rule.</p>
+      <p class="insight"><strong>Finding:</strong> Catchment location matters more than size. Smaller storages often maintain higher fullness than larger ones. Conditions vary significantly across reservoirs.</p>
     </section>
 
     <section class="wide">
       <h2>The 3–4 Month Lag: Why Rainfall Today Means Water Tomorrow</h2>
-      <p class="description">Fifteen years of synchronized rainfall and storage data exposes the critical time lag between precipitation and reservoir replenishment. This relationship determines when water restrictions begin, and when they can safely end.</p>
+      <p class="description">Fifteen years of data reveals critical time lag. Precipitation takes time to reach reservoirs. This delay determines water restriction timing.</p>
       <div id="v2"></div>
-      <p class="insight"><strong>Policy-Relevant Insight:</strong> In our dataset, statewide storage responds to rainfall with an observed 3–4 month lag. For example, the June 2016 rainfall increase (~77mm average across stations) was followed by a large storage rise by September 2016 (+3.58M ML statewide). Understanding this delay helps set realistic expectations for recovery timing.</p>
+      <p class="insight"><strong>Key Insight:</strong> Statewide storage responds 3-4 months after rainfall. Example: June 2016 rainfall (~77mm) led to storage rise by September (+3.58M ML). Understanding this lag helps set realistic recovery expectations.</p>
     </section>
   </div>
 
   <section class="conclusions">
     <h2>Four Lessons for Victoria's Water Future</h2>
-    <p><strong>1. Geography matters:</strong> Coastal and upland catchments receive higher rainfall than inland areas, complicating equitable distribution. <strong>2. Capacity isn't everything:</strong> System behavior depends on both capacity and catchment conditions; some large systems still show substantial swings. <strong>3. Observable lag:</strong> Statewide storage tends to respond to rainfall with an approximate 3-4 month lag in our dataset. <strong>4. Variability:</strong> Year-to-year spring rainfall varies substantially, reinforcing the need for flexible planning. All figures above are derived from our dataset.</p>
+    <p><strong>1. Geography matters:</strong> Coastal areas receive more rainfall than inland regions. <strong>2. Capacity isn't everything:</strong> Large systems still show substantial storage swings. <strong>3. Observable lag:</strong> Storage responds 3-4 months after rainfall. <strong>4. Variability:</strong> Spring rainfall varies dramatically year-to-year, requiring flexible planning.</p>
   </section>
 
   <footer>
     <h3>Data Sources & Methodology</h3>
     <div class="data-sources">
-      <p><strong>Rainfall Data:</strong> Bureau of Meteorology (BOM) monthly rainfall data for Victoria weather stations, 2010-2025</p>
-      <p><strong>Reservoir Storage:</strong> Victorian Water Resources data, monthly storage volumes and capacity data, 2010-2025</p>
-      <p><strong>Processing:</strong> Data aggregated monthly, normalized by capacity where indicated. No significant data wrangling performed.</p>
-      <p><strong>Context:</strong> Victoria population approx 7,012,962 (Sept 2024 estimate). Sources: <a href="https://www.abs.gov.au/statistics/people/population/national-state-and-territory-population/latest-release" target="_blank" rel="noopener">ABS National, state and territory population</a>, and <a href="https://en.wikipedia.org/wiki/Victoria_(state)" target="_blank" rel="noopener">Wikipedia: Victoria (state)</a>.</p>
+      <p><strong>Rainfall:</strong> <a href="http://www.bom.gov.au/climate/data/index.shtml" target="_blank" rel="noopener">Bureau of Meteorology (BOM) FTP Server - HQ Monthly PRCP dataset</a>, Victoria stations, 2010-2025</p>
+      <p><strong>Storage:</strong> <a href="https://www.water.vic.gov.au/our-programs/water-monitoring-and-reporting/current-water-snapshot" target="_blank" rel="noopener">Southern and Western Victoria water storage levels - monthly dataset</a>, 2010-2025</p>
+      <p><strong>Processing:</strong> Monthly aggregation, normalized by capacity where indicated</p>
+      <p><strong>Context:</strong> Victoria population ~7.0M (Sept 2024). Sources: <a href="https://www.abs.gov.au/statistics/people/population/national-state-and-territory-population/latest-release" target="_blank" rel="noopener">ABS</a>, <a href="https://en.wikipedia.org/wiki/Victoria_(state)" target="_blank" rel="noopener">Wikipedia</a>.</p>
     </div>
-    <p class="copyright">© 2025 Rahul Pejathaya (32993226) | Created for FIT3179 Data Visualisation 2, Monash University</p>
+    <p class="copyright">© 2025 Rahul Pejathaya (32993226) | FIT3179 Data Visualisation 2, Monash University</p>
   </footer>
 </main>
 

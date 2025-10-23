@@ -40,12 +40,7 @@
       "encoding": {
         "x": {"field": "Month_num", "type": "ordinal"},
         "y": {"field": "Year_num", "type": "ordinal"},
-        "text": {"value": "Driest month"},
-        "tooltip": [
-          {"field": "Year_num", "title": "Year"},
-          {"field": "MonthLabel", "title": "Month"},
-          {"field": "AvgRain_mm", "title": "Rain (mm)", "format": ".1f"}
-        ]
+        "text": {"value": "Driest month"}
       }
     },
     {
@@ -57,12 +52,7 @@
       "mark": {"type": "rect", "fill": "#ffffff", "fillOpacity": 0.001, "stroke": "#d32f2f", "strokeWidth": 2, "zindex": 9},
       "encoding": {
         "x": {"field": "Month_num", "type": "ordinal"},
-        "y": {"field": "Year_num", "type": "ordinal"},
-        "tooltip": [
-          {"field": "Year_num", "title": "Year"},
-          {"field": "MonthLabel", "title": "Month"},
-          {"field": "AvgRain_mm", "title": "Rain (mm)", "format": ".1f"}
-        ]
+        "y": {"field": "Year_num", "type": "ordinal"}
       }
     },
     {
@@ -75,12 +65,7 @@
       "encoding": {
         "x": {"field": "Month_num", "type": "ordinal"},
         "y": {"field": "Year_num", "type": "ordinal"},
-        "text": {"value": "Wettest month"},
-        "tooltip": [
-          {"field": "Year_num", "title": "Year"},
-          {"field": "MonthLabel", "title": "Month"},
-          {"field": "AvgRain_mm", "title": "Rain (mm)", "format": ".1f"}
-        ]
+        "text": {"value": "Wettest month"}
       }
     },
     {
@@ -92,12 +77,7 @@
       "mark": {"type": "rect", "fill": "#ffffff", "fillOpacity": 0.001, "stroke": "#2e7d32", "strokeWidth": 2, "zindex": 9},
       "encoding": {
         "x": {"field": "Month_num", "type": "ordinal"},
-        "y": {"field": "Year_num", "type": "ordinal"},
-        "tooltip": [
-          {"field": "Year_num", "title": "Year"},
-          {"field": "MonthLabel", "title": "Month"},
-          {"field": "AvgRain_mm", "title": "Rain (mm)", "format": ".1f"}
-        ]
+        "y": {"field": "Year_num", "type": "ordinal"}
       }
     },
     {
